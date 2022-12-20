@@ -1,0 +1,51 @@
+version: '2'
+# Services
+services:
+
+  # PHP Service
+  php:
+    build:
+      dockerfile: php/Dockerfile
+    volumes:
+      - '../ontoloo:/var/www/ontoloo'
+    depends_on:
+      - mariadb
+
+  # Nginx Service
+  nginx:
+    image: nginx:latest
+    ports:
+      - '81:80'
+    links:
+      - 'php'
+    volumes:
+      - '../ontoloo:/var/www/ontoloo'
+      - './nginx-conf:/etc/nginx/conf.d'
+    depends_on:
+      - php
+
+  # MariaDB Service
+  mariadb:
+    image: mariadb:10.3
+    environment:
+      MARIADB_ROOT_HOST: localhost
+      MARIADB_DATABASE: beta
+      MARIADB_USER: km4b
+      MARIADB_PASSWORD: qwerty
+      MYSQL_ROOT_PASSWORD: wagnyjagare
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  # phpMyAdmin Service
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: mariadb
+    depends_on:
+      - mariadb
+
+# Volumes
+volumes:
+  mysql_data:
