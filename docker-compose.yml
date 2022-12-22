@@ -16,7 +16,7 @@ services:
     container_name: ontoloo_nginx
     image: nginx:latest
     ports:
-      - '8000:80'
+      - '80:80'
       - '443:443'
     restart: always
     links:
