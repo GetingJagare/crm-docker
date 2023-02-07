@@ -7,7 +7,7 @@ services:
     build:
       dockerfile: php/Dockerfile
     volumes:
-      - ../ontoloo:/var/www/ontoloo/:rw
+      - ../app:/var/www/ontoloo/:rw
     depends_on:
       - mariadb
 
@@ -22,7 +22,7 @@ services:
     links:
       - 'php'
     volumes:
-      - ../ontoloo:/var/www/ontoloo/:rw
+      - ../app:/var/www/ontoloo/:rw
       - ./nginx-conf:/etc/nginx/conf.d/:ro
       - ./certs:/etc/nginx/certs/:ro
     depends_on:
@@ -37,7 +37,7 @@ services:
     env_file:
       - .env
     volumes:
-      - mysql_data:/var/lib/mysql
+      - ontoloo_mysql_data:/var/lib/mysql
 
   # phpMyAdmin Service
   phpmyadmin:
@@ -52,4 +52,4 @@ services:
 
 # Volumes
 volumes:
-  mysql_data:
+  ontoloo_mysql_data:
