@@ -3,7 +3,9 @@ FROM php:7.4-fpm
 WORKDIR /var/www/ontoloo
 
 # Installing dependencies for the PHP modules
-RUN apt-get update && apt-get install -y zip libzip-dev libpng-dev libicu-dev libonig-dev libcurl4-gnutls-dev libxml2-dev
+RUN apt-get update
+RUN apt-get install -y git
+RUN apt-get install -y zip libzip-dev libpng-dev libicu-dev libonig-dev libcurl4-gnutls-dev libxml2-dev
 
 # Installing additional PHP modules
 RUN docker-php-ext-install calendar mysqli pdo pdo_mysql gd zip bcmath ctype intl mbstring opcache xml dom curl
