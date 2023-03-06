@@ -4,6 +4,7 @@ services:
   # PHP Service
   ontoloo_php:
     container_name: ontoloo_php
+    image: ontoloo:latest
     build:
       dockerfile: php/Dockerfile
     volumes:
@@ -12,7 +13,7 @@ services:
       - ontoloo_mysql
 
   # Nginx Service
-  nginx:
+  ontoloo_nginx:
     container_name: ontoloo_nginx
     image: nginx:1.23
     ports:
@@ -40,9 +41,9 @@ services:
       - ontoloo_mysql_data:/var/lib/mysql
 
   # phpMyAdmin Service
-  phpmyadmin:
+  ontoloo_pma:
     container_name: ontoloo_pma
-    image: phpmyadmin/phpmyadmin:latest
+    image: phpmyadmin:5.2.1
     ports:
       - '8080:80'
     environment:
