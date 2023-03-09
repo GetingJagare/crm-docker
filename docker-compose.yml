@@ -39,6 +39,8 @@ services:
       - .env
     volumes:
       - ontoloo_mysql_data:/var/lib/mysql
+      - ./mysql/my-custom.cnf:/etc/mysql/conf.d/custom.cnf
+      - ./mysql/db:/docker-entrypoint-initdb.d
 
   # phpMyAdmin Service
   ontoloo_pma:
