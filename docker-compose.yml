@@ -2,57 +2,54 @@ version: '2'
 # Services
 services:
   # PHP Service
-  ontoloo_php:
-    container_name: ontoloo_php
-    image: ontoloo:latest
+  crm_php:
+    container_name: crm_php
+    image: crm:latest
     build:
-      dockerfile: php/Dockerfile
+      context: ..
+      dockerfile: compose/php/Dockerfile
     volumes:
-      - ../app:/var/www/ontoloo/:rw
+      - ../app:/var/www/app/:rw
     depends_on:
-      - ontoloo_mysql
+      - crm_mysql
+  crm_composer:
+    image: composer/composer:2.5.5
 
   # Nginx Service
-  ontoloo_nginx:
-    container_name: ontoloo_nginx
+  crm_nginx:
+    container_name: crm_nginx
     image: nginx:1.23
     ports:
       - '80:80'
-      - '443:443'
     restart: always
     links:
-      - 'ontoloo_php:php'
+      - 'crm_php:php'
     volumes:
-      - ../app:/var/www/ontoloo/:rw
+      - ../app:/var/www/app/:rw
       - ./nginx-conf:/etc/nginx/conf.d/:ro
-      - ./certs:/etc/nginx/certs/:ro
     depends_on:
-      - ontoloo_php
+      - crm_php
 
   # MariaDB Service
-  ontoloo_mysql:
-    container_name: ontoloo_mysql
+  crm_mysql:
+    container_name: crm_mysql
     image: mariadb:10.3
     ports:
       - '3306:3306'
     env_file:
-      - .env
+      - ../app/.env
     volumes:
-      - ontoloo_mysql_data:/var/lib/mysql
-      - ./mysql/my-custom.cnf:/etc/mysql/conf.d/custom.cnf
-      - ./mysql/db:/docker-entrypoint-initdb.d
-
-  # phpMyAdmin Service
-  ontoloo_pma:
-    container_name: ontoloo_pma
-    image: phpmyadmin:5.2.1
+      - crm_mysql_data:/var/lib/mysql
+  crm_pma:
+    container_name: crm_pma
+    image: phpmyadmin/phpmyadmin:latest
     ports:
       - '8080:80'
     environment:
-      PMA_HOST: ontoloo_mysql
+      PMA_HOST: crm_mysql
     depends_on:
-      - ontoloo_mysql
+      - crm_mysql
 
 # Volumes
 volumes:
-  ontoloo_mysql_data:
+  crm_mysql_data:

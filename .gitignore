@@ -1,5 +1,2 @@
 .env
 .idea
-certs
-app
-mysql/db

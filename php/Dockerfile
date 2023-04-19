@@ -1,6 +1,8 @@
-FROM php:7.4-fpm
+FROM php:8.1-fpm
 
-WORKDIR /var/www/ontoloo
+WORKDIR /var/www/app
+
+COPY app/ .
 
 # Installing dependencies for the PHP modules
 RUN apt-get update
@@ -15,4 +17,4 @@ RUN echo '\nphp_admin_flag[log_errors] = on' >> /usr/local/etc/php-fpm.d/www.con
 RUN echo '\nphp_admin_value[memory_limit] = 2048M' >> /usr/local/etc/php-fpm.d/www.conf;
 RUN echo '\nphp_admin_value[short_open_tag] = on' >> /usr/local/etc/php-fpm.d/www.conf;
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+COPY --from=composer/composer:latest-bin /composer /usr/bin/composer
