@@ -5,6 +5,7 @@ services:
   crm_php:
     container_name: crm_php
     image: crm:latest
+    user: '1000:1000'
     build:
       context: ..
       dockerfile: compose/php/Dockerfile
